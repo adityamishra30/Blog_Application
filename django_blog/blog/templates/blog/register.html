@@ -1,31 +1,138 @@
-{%extends 'blog/base.html' %} {%block content%}
-<h1>Register</h1>
-<form method="POST">
-  {%csrf_token %}
-  <label>username</label><br />
-  <input type="text" name="username" placeholder="ENTER USERNAME" />
-  <br /><br />
-  <label> Email</label>
-  <br />
-  <input type="email" name="email" placeholder="ENTER EMAIL" /><br /><br />
-  <label>Password</label>
-  <br />
-  <input
-    type="password"
-    name="password"
-    placeholder="enter password"
-  /><br /><br />
-  <label>Confirm Password</label>
-  <br />
-  <input
-    type="password"
-    name="confirm_password"
-    placeholder="confirm password"
-  /><br /><br />
-  <button type="submit">Register</button>
-</form>
+{% extends 'blog/auth_base.html' %}
 
-<p>Already have an account? 
-<a href="{%url 'login' %}">Login here</a>
-</p>
-{%endblock%}
+{% block content %}
+
+<div class="min-h-screen flex items-center justify-center bg-slate-100">
+
+    <div class="w-full max-w-lg bg-white rounded-lg shadow-lg p-10">
+
+        <div class="text-center mb-10">
+            <h1 class="text-5xl font-bold">Discover</h1>
+            <p class="text-gray-500 mt-2">
+                Join the editorial frontier.
+            </p>
+        </div>
+
+        <form method="POST" class="space-y-6">
+
+            {% csrf_token %}
+
+            <div>
+                <label
+                    for="username"
+                    class="block text-sm font-semibold uppercase tracking-wide mb-2"
+                >
+                    Username
+                </label>
+
+                <input
+                    id="username"
+                    type="text"
+                    name="username"
+                    placeholder="John Doe"
+                    required
+                    class="w-full border border-gray-300 rounded-md px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                >
+            </div>
+
+            <div>
+                <label
+                    for="email"
+                    class="block text-sm font-semibold uppercase tracking-wide mb-2"
+                >
+                    Email Address
+                </label>
+
+                <input
+                    id="email"
+                    type="email"
+                    name="email"
+                    placeholder="email@example.com"
+                    required
+                    class="w-full border border-gray-300 rounded-md px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                >
+            </div>
+
+            <div>
+                <label
+                    for="password"
+                    class="block text-sm font-semibold uppercase tracking-wide mb-2"
+                >
+                    Password
+                </label>
+
+                <input
+                    id="password"
+                    type="password"
+                    name="password"
+                    placeholder="Enter password"
+                    required
+                    class="w-full border border-gray-300 rounded-md px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                >
+            </div>
+
+            <div>
+                <label
+                    for="confirm_password"
+                    class="block text-sm font-semibold uppercase tracking-wide mb-2"
+                >
+                    Confirm Password
+                </label>
+
+                <input
+                    id="confirm_password"
+                    type="password"
+                    name="confirm_password"
+                    placeholder="Confirm password"
+                    required
+                    class="w-full border border-gray-300 rounded-md px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                >
+            </div>
+
+            <div class="flex items-start gap-3">
+
+                <input
+                    id="terms"
+                    type="checkbox"
+                    required
+                    class="mt-1"
+                >
+
+                <label for="terms" class="text-sm text-gray-600">
+                    I agree to the
+                    <a href="#" class="font-semibold hover:underline">
+                        Terms of Service
+                    </a>
+                    and
+                    <a href="#" class="font-semibold hover:underline">
+                        Privacy Policy
+                    </a>.
+                </label>
+
+            </div>
+
+            <button
+                type="submit"
+                class="w-full bg-blue-600 text-white py-3 rounded-md text-lg font-semibold hover:bg-blue-700 transition"
+            >
+                Create Account
+            </button>
+
+        </form>
+
+        <p class="text-center mt-8 text-gray-600">
+            Already have an account?
+
+            <a
+                href="{% url 'login' %}"
+                class="text-blue-600 font-semibold hover:underline"
+            >
+                Log In
+            </a>
+        </p>
+
+    </div>
+
+</div>
+
+{% endblock %}
