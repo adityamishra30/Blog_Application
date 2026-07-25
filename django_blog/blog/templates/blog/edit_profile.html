@@ -1,0 +1,140 @@
+{% extends "blog/app_base.html" %}
+{% block content %}
+
+<div class="max-w-xl mx-auto px-6 py-12">
+    
+    <!-- Header -->
+    <div class="mb-8">
+        <h1 class="text-3xl font-extrabold text-gray-900 tracking-tight">
+            Edit Profile
+        </h1>
+        <p class="text-xs text-gray-500 mt-1 font-medium">
+            Update your public profile details and bio.
+        </p>
+    </div>
+
+    <!-- Form Container -->
+    <form id="profile-edit-form" method="POST" enctype="multipart/form-data" class="bg-white border border-gray-200 p-8 space-y-8">
+        {% csrf_token %}
+        
+        <!-- Hidden Django Form Inputs -->
+        <div id="django-form-fields" class="hidden">
+            {{ form.profile_image }}
+            {{ form.bio }}
+        </div>
+
+        <!-- 1. Profile Picture Section -->
+        <div>
+            <label class="block text-xs font-bold text-gray-500 uppercase tracking-widest mb-4">
+                PROFILE PICTURE
+            </label>
+            
+            <div class="flex items-center gap-6">
+                <!-- Avatar Preview -->
+                <img
+                    id="avatar-preview"
+                    src="{{ request.user.profile.profile_image.url }}"
+                    alt="{{ request.user.username }}"
+                    class="w-24 h-24 rounded-full object-cover border border-gray-200 shadow-xs flex-shrink-0"
+                />
+
+                <!-- Dashed Upload Zone -->
+                <div 
+                    id="dropzone"
+                    class="flex-grow border border-dashed border-gray-300 hover:border-gray-900 bg-gray-50 hover:bg-gray-100 p-5 text-center transition cursor-pointer"
+                >
+                    <p class="text-xs font-bold text-gray-900 uppercase tracking-wider">
+                        CHOOSE PROFILE PICTURE
+                    </p>
+                    <p id="file-name-label" class="text-[11px] text-gray-500 mt-1 font-medium">
+                        Drag and drop image here, or click to browse
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <div class="h-px bg-gray-100 w-full"></div>
+
+        <!-- 2. Bio Section -->
+        <div>
+            <div class="flex justify-between items-center mb-3">
+                <label for="custom_bio" class="block text-xs font-bold text-gray-500 uppercase tracking-widest">
+                    BIO
+                </label>
+                <span id="bio-char-count" class="text-[11px] font-bold text-gray-400">
+                    0 / 250
+                </span>
+            </div>
+
+            <textarea
+                id="custom_bio"
+                rows="4"
+                maxlength="250"
+                placeholder="Tell readers about yourself..."
+                class="w-full border border-gray-300 p-4 text-sm text-gray-900 placeholder:text-gray-400 focus:outline-none focus:border-gray-900 bg-white resize-none"
+            ></textarea>
+        </div>
+
+        <!-- Action Buttons -->
+        <div class="flex justify-end gap-4 pt-4 border-t border-gray-100">
+            <a
+                href="{% url 'profile' %}"
+                class="bg-white border border-gray-900 text-gray-900 text-xs font-bold uppercase tracking-widest px-6 py-2.5 hover:bg-gray-900 hover:text-white transition"
+            >
+                CANCEL
+            </a>
+
+            <button
+                type="submit"
+                id="submit-btn"
+                class="bg-[#3843D0] hover:bg-indigo-700 text-white text-xs font-bold uppercase tracking-widest px-6 py-2.5 transition"
+            >
+                <span id="submit-text">SAVE CHANGES</span>
+            </button>
+        </div>
+    </form>
+
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const djangoFields = document.getElementById('django-form-fields');
+        const realFileInput = djangoFields.querySelector('input[type="file"]');
+        const realBioTextarea = djangoFields.querySelector('textarea');
+        
+        const customBio = document.getElementById('custom_bio');
+        const dropzone = document.getElementById('dropzone');
+        const fileNameLabel = document.getElementById('file-name-label');
+        const avatarPreview = document.getElementById('avatar-preview');
+        const bioCharCount = document.getElementById('bio-char-count');
+
+        if (realBioTextarea) {
+            customBio.value = realBioTextarea.value;
+            bioCharCount.textContent = `${customBio.value.length} / 250`;
+        }
+
+        dropzone.addEventListener('click', () => realFileInput.click());
+
+        customBio.addEventListener('input', () => {
+            realBioTextarea.value = customBio.value;
+            bioCharCount.textContent = `${customBio.value.length} / 250`;
+        });
+
+        realFileInput.addEventListener('change', () => {
+            if (realFileInput.files && realFileInput.files[0]) {
+                const file = realFileInput.files[0];
+                fileNameLabel.textContent = `Selected: ${file.name}`;
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    avatarPreview.src = e.target.result;
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+    });
+</script>
+
+{% endblock %}
+
+
+

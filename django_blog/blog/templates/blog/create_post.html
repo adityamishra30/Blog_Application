@@ -1,121 +1,138 @@
-{% extends "blog/app_base.html" %}
+{% extends "blog/base.html" %}
 
-{% block content %}
+{% block body %}
 
-<div class="min-h-screen bg-gray-50 py-10 px-4">
+<form id="create-post-form" method="POST" enctype="multipart/form-data" class="min-h-screen flex flex-col bg-[#F9FAFB]">
+    {% csrf_token %}
 
-    <div class="max-w-4xl mx-auto">
+    <!-- Hidden Real Django Form Fields -->
+    <div id="django-form-fields" class="hidden">
+        {{ form.title }}
+        {{ form.content }}
+        {{ form.cover_image }}
+        {{ form.status }}
+    </div>
 
-        <!-- Header -->
+    <!-- Top Action Navigation Bar -->
+    <header class="bg-white border-b border-gray-200 sticky top-0 z-50 h-16 px-6 lg:px-8 flex justify-between items-center">
+        <!-- Left: Back Button & Logo -->
+        <a href="{% url 'home' %}" class="flex items-center gap-2 text-sm font-bold text-gray-900 hover:text-indigo-600 transition">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-4 h-4">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M10.5 19.5 3 12m0 0 7.5-7.5M3 12h18" />
+            </svg>
+            <span>Discover</span>
+        </a>
+    </header>
 
-        <div class="mb-10 text-center">
-            <h1 class="text-4xl font-bold text-gray-900">
-                ✍️ Create New Post
-            </h1>
-
-            <p class="text-gray-500 mt-2">
-                Share your thoughts with the world.
+    <!-- Main Content Area: Editor & Status -->
+    <div class="flex-1 max-w-4xl w-full mx-auto p-8 sm:p-12 bg-white my-8 border border-gray-200 space-y-8">
+        
+        <!-- Cover Image Uploader -->
+        <div id="cover-dropzone" class="border-2 border-dashed border-gray-300 hover:border-gray-900 bg-gray-50/50 p-10 text-center transition cursor-pointer group">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-8 h-8 text-gray-400 group-hover:text-gray-900 mx-auto transition">
+                <path stroke-linecap="round" stroke-linejoin="round" d="m2.25 15.75 5.159-5.159a2.25 2.25 0 0 1 3.182 0l5.159 5.159m-1.5-1.5 1.409-1.409a2.25 2.25 0 0 1 3.182 0l2.909 2.909m-18 3.75h16.5a1.5 1.5 0 0 0 1.5-1.5V6a1.5 1.5 0 0 0-1.5-1.5H3.75A1.5 1.5 0 0 0 2.25 6v12a1.5 1.5 0 0 0 1.5 1.5Zm10.5-11.25h.008v.008h-.008V8.25Zm.375 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Z" />
+            </svg>
+            <p class="text-xs font-bold uppercase tracking-wider text-gray-700 mt-2">
+                ADD COVER IMAGE
+            </p>
+            <p id="cover-filename" class="text-[10px] text-gray-400 mt-1 font-medium">
+                Click to browse or upload image file
             </p>
         </div>
 
-        <!-- Form Card -->
+        <!-- Title Field -->
+        <div>
+            <input
+                type="text"
+                id="custom_title"
+                placeholder="Article Title..."
+                class="w-full text-3xl sm:text-4xl font-extrabold text-gray-900 placeholder:text-gray-300 border-0 focus:ring-0 p-0 focus:outline-none"
+            />
+        </div>
 
-        <div class="bg-white rounded-3xl shadow-lg border border-gray-200 p-8">
+        <!-- Story Content Textarea -->
+        <div>
+            <textarea
+                id="custom_content"
+                rows="12"
+                placeholder="Tell your story..."
+                class="w-full border-0 focus:ring-0 p-0 text-base text-gray-800 placeholder:text-gray-400 focus:outline-none resize-none leading-relaxed"
+            ></textarea>
+        </div>
 
-            <form method="POST" enctype="multipart/form-data" class="space-y-8">
+        <!-- Status Selection & Submit Buttons -->
+        <div class="pt-6 border-t border-gray-100">
+            <label class="block text-xs font-bold uppercase tracking-widest text-gray-500 mb-3">
+                POST ACTIONS
+            </label>
+            <div class="flex gap-4 max-w-md">
+                <button 
+                    type="button"
+                    onclick="submitFormWithStatus('published')"
+                    class="flex-1 border border-[#3843D0] bg-[#3843D0] hover:bg-indigo-700 text-white p-3.5 text-center text-xs font-bold uppercase tracking-wider transition cursor-pointer"
+                >
+                    PUBLISH POST
+                </button>
 
-                {% csrf_token %}
-
-                <!-- Cover Image -->
-
-                <div>
-
-                    <label class="block text-sm font-semibold text-gray-700 mb-3">
-                        Cover Image
-                    </label>
-
-                    <div
-                        class="border-2 border-dashed border-gray-300 rounded-2xl p-10 text-center hover:border-black transition duration-300">
-
-                        <div class="text-5xl mb-3">
-                            📷
-                        </div>
-
-                        <p class="text-gray-600 mb-4">
-                            Upload a cover image
-                        </p>
-
-                        {{ form.cover_image }}
-
-                    </div>
-
-                </div>
-
-                <!-- Title -->
-
-                <div>
-
-                    <label class="block text-sm font-semibold text-gray-700 mb-2">
-                        Title
-                    </label>
-
-                    {{ form.title }}
-
-                </div>
-
-                <!-- Content -->
-
-                <div>
-
-                    <label class="block text-sm font-semibold text-gray-700 mb-2">
-                        Content
-                    </label>
-
-                    {{ form.content }}
-
-                </div>
-
-                <!-- Status -->
-
-                <div>
-
-                    <label class="block text-sm font-semibold text-gray-700 mb-2">
-                        Status
-                    </label>
-
-                    <div class="max-w-xs">
-                        {{ form.status }}
-                    </div>
-
-                </div>
-
-                <!-- Buttons -->
-
-                <div class="flex justify-end gap-4 pt-4">
-
-                    <a href="{% url 'home' %}"
-                        class="px-6 py-3 rounded-xl border border-gray-300 hover:bg-gray-100 transition">
-
-                        Cancel
-
-                    </a>
-
-                    <button
-                        type="submit"
-                        class="bg-black text-white px-8 py-3 rounded-xl hover:bg-gray-800 transition duration-300 shadow">
-
-                        Publish Post
-
-                    </button>
-
-                </div>
-
-            </form>
-
+                <button 
+                    type="button"
+                    onclick="submitFormWithStatus('draft')"
+                    class="flex-1 border border-gray-300 hover:border-gray-900 bg-white text-gray-800 p-3.5 text-center text-xs font-bold uppercase tracking-wider transition cursor-pointer"
+                >
+                    SAVE AS DRAFT
+                </button>
+            </div>
         </div>
 
     </div>
+</form>
 
-</div>
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const djangoFields = document.getElementById('django-form-fields');
+        const realTitle = djangoFields.querySelector('input[name="title"]');
+        const realContent = djangoFields.querySelector('textarea[name="content"]');
+        const realCover = djangoFields.querySelector('input[name="cover_image"]');
+
+        const customTitle = document.getElementById('custom_title');
+        const customContent = document.getElementById('custom_content');
+        const coverDropzone = document.getElementById('cover-dropzone');
+        const coverFilename = document.getElementById('cover-filename');
+
+        // Sync inputs
+        if (realTitle) customTitle.value = realTitle.value;
+        if (realContent) customContent.value = realContent.value;
+
+        customTitle.addEventListener('input', () => { if (realTitle) realTitle.value = customTitle.value; });
+        customContent.addEventListener('input', () => { if (realContent) realContent.value = customContent.value; });
+
+        coverDropzone.addEventListener('click', () => realCover.click());
+
+        realCover.addEventListener('change', () => {
+            if (realCover.files && realCover.files[0]) {
+                coverFilename.textContent = `Selected: ${realCover.files[0].name}`;
+                coverFilename.className = "text-[11px] font-bold text-indigo-600 mt-1";
+            }
+        });
+    });
+
+    function submitFormWithStatus(statusVal) {
+        const djangoFields = document.getElementById('django-form-fields');
+        const realTitle = djangoFields.querySelector('input[name="title"]');
+        const realContent = djangoFields.querySelector('textarea[name="content"]');
+        const realStatus = djangoFields.querySelector('select[name="status"]');
+
+        const customTitle = document.getElementById('custom_title');
+        const customContent = document.getElementById('custom_content');
+
+        if (realTitle && customTitle) realTitle.value = customTitle.value;
+        if (realContent && customContent) realContent.value = customContent.value;
+        if (realStatus) realStatus.value = statusVal;
+
+        document.getElementById('create-post-form').submit();
+    }
+</script>
 
 {% endblock %}
+
+

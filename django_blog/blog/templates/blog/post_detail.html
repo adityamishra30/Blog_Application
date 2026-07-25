@@ -2,47 +2,82 @@
 
 {% block content %}
 
-<div class="min-h-screen bg-gray-50 py-10">
+<article class="max-w-3xl mx-auto px-6 py-12">
 
-    <div class="max-w-4xl mx-auto bg-white rounded-3xl shadow-lg overflow-hidden">
+    <!-- Header Metadata -->
+    <div class="space-y-4">
+        <h1 class="text-4xl sm:text-5xl font-extrabold text-gray-900 tracking-tight leading-tight">
+            {{ post.title }}
+        </h1>
 
-        {% if post.cover_image %}
+        <!-- Author Row -->
+        <div class="flex items-center gap-4 pt-2 pb-6 border-b border-gray-200">
             <img
-                src="{{ post.cover_image.url }}"
-                alt="{{ post.title }}"
-                class="w-full h-96 object-cover">
-        {% endif %}
-
-        <div class="p-10">
-
-            <p class="text-gray-500 text-sm">
-                By {{ post.author.username }}
-                •
-                {{ post.created_at|date:"F d, Y" }}
-            </p>
-
-            <h1 class="text-5xl font-bold mt-4">
-                {{ post.title }}
-            </h1>
-
-            <div class="mt-8 text-lg leading-8 text-gray-700 whitespace-pre-line">
-
-                {{ post.content }}
-
+                src="{{ post.author.profile.profile_image.url }}"
+                alt="{{ post.author.username }}"
+                class="w-10 h-10 rounded-full object-cover border border-gray-200"
+            />
+            <div class="text-xs font-bold uppercase tracking-wider text-gray-500">
+                <span class="text-gray-900">BY {{ post.author.username }}</span>
+                <span class="mx-2">•</span>
+                <span>{{ post.created_at|date:"M d, Y" }}</span>
             </div>
-
-            <a
-                href="{% url 'home' %}"
-                class="inline-block mt-10 px-6 py-3 rounded-xl bg-black text-white hover:bg-gray-800 transition">
-
-                ← Back to Home
-
-            </a>
-
         </div>
-
     </div>
 
-</div>
+    <!-- Cover Image -->
+    {% if post.cover_image %}
+    <div class="my-8 border border-gray-200 overflow-hidden bg-gray-100">
+        <img
+            src="{{ post.cover_image.url }}"
+            alt="{{ post.title }}"
+            class="w-full h-[380px] sm:h-[460px] object-cover"
+        />
+    </div>
+    {% endif %}
+
+    <!-- Article Content -->
+    <div class="text-base sm:text-lg leading-relaxed text-gray-800 whitespace-pre-line font-normal my-8 space-y-6">
+        {{ post.content }}
+    </div>
+
+    <!-- Divider -->
+    <div class="h-px bg-gray-200 w-full my-12"></div>
+
+    <!-- Author Card (Bottom) -->
+    <div class="border border-gray-200 bg-gray-50 p-6 sm:p-8 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6">
+        <div class="flex items-center gap-4">
+            <img
+                src="{{ post.author.profile.profile_image.url }}"
+                alt="{{ post.author.username }}"
+                class="w-14 h-14 rounded-full object-cover border border-gray-200 flex-shrink-0"
+            />
+            <div>
+                <h4 class="text-base font-bold text-gray-900">
+                    Written by {{ post.author.username }}
+                </h4>
+                <p class="text-xs text-gray-600 mt-1">
+                    {% if post.author.profile.bio %}
+                        {{ post.author.profile.bio }}
+                    {% else %}
+                        No bio added yet.
+                    {% endif %}
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Back Navigation Link -->
+    <div class="mt-8">
+        <a
+            href="{% url 'home' %}"
+            class="inline-block bg-white border border-gray-900 text-gray-900 text-xs font-bold uppercase tracking-wider px-6 py-2.5 hover:bg-gray-900 hover:text-white transition"
+        >
+            ← BACK TO FEED
+        </a>
+    </div>
+
+</article>
 
 {% endblock %}
+

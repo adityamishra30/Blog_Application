@@ -2,134 +2,95 @@
 
 {% block content %}
 
-<div class="min-h-screen flex items-center justify-center bg-slate-100">
+<div class="min-h-screen flex flex-col justify-center items-center bg-[#F9FAFB] px-4 py-12">
 
-    <div class="w-full max-w-lg bg-white rounded-lg shadow-lg p-10">
+    <div class="w-full max-w-md bg-white border border-gray-200 p-8 sm:p-10">
 
-        <div class="text-center mb-10">
-            <h1 class="text-5xl font-bold">Discover</h1>
-            <p class="text-gray-500 mt-2">
-                Join the editorial frontier.
+        <!-- Logo & Header -->
+        <div class="text-center mb-8">
+            <a href="{% url 'home' %}" class="text-3xl font-extrabold tracking-tight text-gray-900 inline-block">
+                Discover
+            </a>
+            <p class="text-xs text-gray-500 mt-2 font-medium">
+                Join the editorial platform for writers and thinkers.
             </p>
         </div>
 
-        <form method="POST" class="space-y-6">
-
+        <form method="POST" class="space-y-5">
             {% csrf_token %}
 
             <div>
-                <label
-                    for="username"
-                    class="block text-sm font-semibold uppercase tracking-wide mb-2"
-                >
-                    Username
+                <label for="username" class="block text-xs font-bold uppercase tracking-widest text-gray-500 mb-2">
+                    USERNAME
                 </label>
-
                 <input
                     id="username"
                     type="text"
                     name="username"
                     placeholder="John Doe"
                     required
-                    class="w-full border border-gray-300 rounded-md px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    class="w-full border border-gray-300 p-3 text-sm text-gray-900 placeholder:text-gray-400 focus:outline-none focus:border-gray-900 bg-white font-medium"
                 >
             </div>
 
             <div>
-                <label
-                    for="email"
-                    class="block text-sm font-semibold uppercase tracking-wide mb-2"
-                >
-                    Email Address
+                <label for="email" class="block text-xs font-bold uppercase tracking-widest text-gray-500 mb-2">
+                    EMAIL ADDRESS
                 </label>
-
                 <input
                     id="email"
                     type="email"
                     name="email"
                     placeholder="email@example.com"
                     required
-                    class="w-full border border-gray-300 rounded-md px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    class="w-full border border-gray-300 p-3 text-sm text-gray-900 placeholder:text-gray-400 focus:outline-none focus:border-gray-900 bg-white font-medium"
                 >
             </div>
 
             <div>
-                <label
-                    for="password"
-                    class="block text-sm font-semibold uppercase tracking-wide mb-2"
-                >
-                    Password
+                <label for="password" class="block text-xs font-bold uppercase tracking-widest text-gray-500 mb-2">
+                    PASSWORD
                 </label>
-
                 <input
                     id="password"
                     type="password"
                     name="password"
                     placeholder="Enter password"
                     required
-                    class="w-full border border-gray-300 rounded-md px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    class="w-full border border-gray-300 p-3 text-sm text-gray-900 placeholder:text-gray-400 focus:outline-none focus:border-gray-900 bg-white font-medium"
                 >
             </div>
 
             <div>
-                <label
-                    for="confirm_password"
-                    class="block text-sm font-semibold uppercase tracking-wide mb-2"
-                >
-                    Confirm Password
+                <label for="confirm_password" class="block text-xs font-bold uppercase tracking-widest text-gray-500 mb-2">
+                    CONFIRM PASSWORD
                 </label>
-
                 <input
                     id="confirm_password"
                     type="password"
                     name="confirm_password"
                     placeholder="Confirm password"
                     required
-                    class="w-full border border-gray-300 rounded-md px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    class="w-full border border-gray-300 p-3 text-sm text-gray-900 placeholder:text-gray-400 focus:outline-none focus:border-gray-900 bg-white font-medium"
                 >
-            </div>
-
-            <div class="flex items-start gap-3">
-
-                <input
-                    id="terms"
-                    type="checkbox"
-                    required
-                    class="mt-1"
-                >
-
-                <label for="terms" class="text-sm text-gray-600">
-                    I agree to the
-                    <a href="#" class="font-semibold hover:underline">
-                        Terms of Service
-                    </a>
-                    and
-                    <a href="#" class="font-semibold hover:underline">
-                        Privacy Policy
-                    </a>.
-                </label>
-
             </div>
 
             <button
                 type="submit"
-                class="w-full bg-blue-600 text-white py-3 rounded-md text-lg font-semibold hover:bg-blue-700 transition"
+                class="w-full bg-[#3843D0] hover:bg-indigo-700 text-white text-xs font-bold uppercase tracking-wider py-3.5 transition mt-2"
             >
-                Create Account
+                CREATE ACCOUNT
             </button>
-
         </form>
 
-        <p class="text-center mt-8 text-gray-600">
-            Already have an account?
-
-            <a
-                href="{% url 'login' %}"
-                class="text-blue-600 font-semibold hover:underline"
-            >
-                Log In
-            </a>
-        </p>
+        <div class="mt-8 text-center border-t border-gray-100 pt-6">
+            <p class="text-xs text-gray-500">
+                Already have an account?
+                <a href="{% url 'login' %}" class="text-[#3843D0] font-bold hover:underline ml-1">
+                    Log In
+                </a>
+            </p>
+        </div>
 
     </div>
 

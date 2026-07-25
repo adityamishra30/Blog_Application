@@ -1,0 +1,181 @@
+{% extends "blog/app_base.html" %}
+
+{% block content %}
+
+<div class="max-w-3xl mx-auto px-6 py-12">
+
+    <!-- Profile Header (Centered) -->
+    <div class="text-center">
+        <!-- Avatar Circle -->
+        <div class="relative inline-block">
+            <img
+                src="{{ profile.profile_image.url }}"
+                alt="{{ request.user.username }}"
+                class="w-32 h-32 rounded-full object-cover border border-gray-200 shadow-sm mx-auto"
+            />
+        </div>
+
+        <!-- Name -->
+        <h1 class="text-4xl font-extrabold text-gray-900 tracking-tight mt-6">
+            {{ request.user.username }}
+        </h1>
+
+        <!-- Bio -->
+        <p class="text-sm text-gray-600 max-w-lg mx-auto mt-3 leading-relaxed">
+            {% if profile.bio %}
+                {{ profile.bio }}
+            {% else %}
+                No bio added yet.
+            {% endif %}
+        </p>
+
+        <!-- Edit Profile Button -->
+        <div class="mt-6">
+            <a
+                href="{% url 'edit_profile' %}"
+                class="inline-block bg-white border border-gray-900 hover:bg-gray-900 hover:text-white text-gray-900 text-xs font-bold uppercase tracking-widest px-8 py-2.5 transition duration-200"
+            >
+                EDIT PROFILE
+            </a>
+        </div>
+    </div>
+
+    <!-- Stat Counters (3 Columns separated by vertical dividers) -->
+    <div class="grid grid-cols-3 text-center my-10 py-6 border-y border-gray-200 divide-x divide-gray-200">
+        <div>
+            <h2 class="text-2xl font-black text-gray-900">{{ published_posts.count }}</h2>
+            <p class="text-[10px] font-bold tracking-widest text-gray-400 uppercase mt-1">ARTICLES</p>
+        </div>
+
+        <div>
+            <h2 class="text-2xl font-black text-gray-900">{{ profile.followers.count }}</h2>
+            <p class="text-[10px] font-bold tracking-widest text-gray-400 uppercase mt-1">READERS</p>
+        </div>
+
+        <div>
+            <h2 class="text-2xl font-black text-gray-900">{{ request.user.following.count }}</h2>
+            <p class="text-[10px] font-bold tracking-widest text-gray-400 uppercase mt-1">FOLLOWING</p>
+        </div>
+    </div>
+
+    <!-- Tab Bar (PUBLISHED / DRAFTS) -->
+    <div class="border-b border-gray-200 mb-8 flex gap-8">
+        <button id="tab-published" onclick="switchTab('published')" class="text-xs font-bold tracking-widest uppercase pb-3 border-b-2 border-[#3843D0] text-[#3843D0]">
+            PUBLISHED
+        </button>
+        <button id="tab-drafts" onclick="switchTab('drafts')" class="text-xs font-bold tracking-widest uppercase pb-3 border-b-2 border-transparent text-gray-400 hover:text-gray-900 transition">
+            DRAFTS ({{ draft_posts.count }})
+        </button>
+    </div>
+
+    <!-- Tab Content: Published Posts -->
+    <div id="content-published" class="space-y-8">
+        {% for post in published_posts %}
+        <article class="group border-b border-gray-100 pb-8 flex items-start justify-between gap-6">
+            <div class="flex-1">
+                <h3 class="text-xl font-bold text-gray-900 leading-snug mt-1 group-hover:text-indigo-600 transition-colors">
+                    <a href="{% url 'post_detail' post.id %}">
+                        {{ post.title }}
+                    </a>
+                </h3>
+
+                <p class="text-xs text-gray-600 mt-2 leading-relaxed line-clamp-2 font-normal">
+                    {{ post.content }}
+                </p>
+
+                <div class="text-[11px] font-bold uppercase tracking-wider text-gray-400 mt-4">
+                    {{ post.created_at|date:"M d, Y" }}
+                </div>
+            </div>
+
+            <!-- Square Thumbnail on Right -->
+            <div class="w-28 h-28 sm:w-32 sm:h-32 bg-gray-100 border border-gray-200 flex-shrink-0 overflow-hidden">
+                {% if post.cover_image %}
+                <img src="{{ post.cover_image.url }}" alt="{{ post.title }}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
+                {% else %}
+                <div class="w-full h-full flex items-center justify-center text-gray-400 text-xs font-semibold uppercase bg-gray-200">
+                    No Image
+                </div>
+                {% endif %}
+            </div>
+        </article>
+        {% empty %}
+        <div class="py-12 text-center text-gray-500 text-sm">
+            No published articles yet.
+        </div>
+        {% endfor %}
+    </div>
+
+    <!-- Tab Content: Drafts (Hidden by default) -->
+    <div id="content-drafts" class="hidden space-y-6">
+        {% for post in draft_posts %}
+        <div class="bg-gray-50 border border-gray-200 p-6 flex justify-between items-center">
+            <div>
+                <span class="text-[10px] font-bold tracking-widest uppercase bg-yellow-100 text-yellow-800 px-2 py-0.5 mb-2 inline-block">
+                    DRAFT
+                </span>
+                <h3 class="text-lg font-bold text-gray-900">
+                    {{ post.title }}
+                </h3>
+                <p class="text-xs text-gray-500 mt-1">
+                    Last edited {{ post.updated_at|date:"M d, Y" }}
+                </p>
+            </div>
+            <div class="flex items-center gap-3">
+                <a href="{% url 'post_detail' post.id %}" class="text-xs font-bold uppercase tracking-wider text-gray-700 hover:text-gray-900 border border-gray-300 px-3 py-1.5 bg-white">
+                    Preview
+                </a>
+                <a href="{% url 'publish_post' post.id %}" class="text-xs font-bold uppercase tracking-wider text-white bg-[#3843D0] hover:bg-indigo-700 px-3 py-1.5">
+                    Publish
+                </a>
+            </div>
+        </div>
+        {% empty %}
+        <div class="py-12 text-center text-gray-500 text-sm">
+            No draft posts available.
+        </div>
+        {% endfor %}
+        
+        <div class="text-center pt-4">
+            <a href="{% url 'drafts' %}" class="text-xs font-bold uppercase tracking-wider text-indigo-600 hover:underline">
+                View All Drafts →
+            </a>
+        </div>
+    </div>
+
+    <!-- Bottom Logout Action -->
+    <div class="mt-16 pt-8 border-t border-gray-200 text-center">
+        <a
+            href="{% url 'logout' %}"
+            class="inline-block bg-white border border-gray-300 hover:border-gray-900 hover:bg-gray-900 text-gray-700 hover:text-white text-xs font-bold uppercase tracking-widest px-8 py-3 transition duration-200"
+        >
+            LOG OUT
+        </a>
+    </div>
+
+</div>
+
+<script>
+    function switchTab(tab) {
+        const pubTab = document.getElementById('tab-published');
+        const draftTab = document.getElementById('tab-drafts');
+        const pubContent = document.getElementById('content-published');
+        const draftContent = document.getElementById('content-drafts');
+
+        if (tab === 'published') {
+            pubTab.className = "text-xs font-bold tracking-widest uppercase pb-3 border-b-2 border-[#3843D0] text-[#3843D0]";
+            draftTab.className = "text-xs font-bold tracking-widest uppercase pb-3 border-b-2 border-transparent text-gray-400 hover:text-gray-900 transition";
+            pubContent.classList.remove('hidden');
+            draftContent.classList.add('hidden');
+        } else {
+            draftTab.className = "text-xs font-bold tracking-widest uppercase pb-3 border-b-2 border-[#3843D0] text-[#3843D0]";
+            pubTab.className = "text-xs font-bold tracking-widest uppercase pb-3 border-b-2 border-transparent text-gray-400 hover:text-gray-900 transition";
+            draftContent.classList.remove('hidden');
+            pubContent.classList.add('hidden');
+        }
+    }
+</script>
+
+{% endblock %}
+
+
