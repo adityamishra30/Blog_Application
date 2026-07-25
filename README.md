@@ -34,7 +34,7 @@ At its core, Discover empowers creators to overcome writer's block. By leveragin
 
 ## 🏠 Editorial Home Feed
 
-The home feed delivers a clean, editorial layout featuring a prominent spotlight post alongside a multi-column story grid highlighting published works, author metadata, publication dates, and cover images.
+The home feed delivers a clean, editorial layout featuring a prominent spotlight hero post alongside a multi-column story grid highlighting published works, author metadata, publication dates, and cover images.
 
 <div align="center">
 
@@ -46,15 +46,26 @@ The home feed delivers a clean, editorial layout featuring a prominent spotlight
 
 ---
 
-## ✨ Key Features
+## ✨ Key Features & Platform Overview
 
 Discover comes packed with a comprehensive set of features built for content creators and readers alike:
 
+### 🖥️ Page & Feature Gallery
+
+| Page / Feature | Description | Reference Screenshot | AI Generative Text |
+| :--- | :--- | :--- | :--- |
+| **🏠 Home Feed** | Hero story spotlight & multi-column article grid | [Home Feed](assets/screenshots/home_feed.png) | Featured in main feed |
+| **✍️ Story Creator** | Distraction-free article writer & cover image uploader | [Create Story](assets/screenshots/create_post.png) | Input prompt trigger |
+| **🤖 AI Generative Text** | Instant long-form blog article generation via Google Gemini AI | [AI Generative Text](assets/screenshots/ai_generated_text.png) | **Full Article Output** |
+| **👤 Author Profile** | User dashboard with publication stats, avatar, and bio | [Profile Dashboard](assets/screenshots/profile_page.png) | Manages published AI stories |
+| **📝 Drafts Hub** | Workspace for saving, previewing, and publishing draft stories | [Drafts Workspace](assets/screenshots/drafts_page.png) | Stores generated draft posts |
+| **🔍 Search Page** | Real-time title & content search with instant filtering | [Search Page](assets/screenshots/search_page.png) | Searches AI & user posts |
+
 ### 🤖 Generative AI & Content Creation
 - **✅ Google Gemini AI Blog Generator**: Generate comprehensive long-form articles instantly from just a title or prompt.
-- **✅ AI-Powered Article Writing**: Automatically structures articles with captivating introductions, section headers, bulleted takeaways, and conclusions.
+- **✅ AI Generative Text Output**: Automatically structures articles with captivating introductions, section headers (`##`), bulleted takeaways, and conclusions.
 - **✅ Decoupled AI Service Layer**: Modular architecture isolating AI prompt formatting and Gemini SDK client logic in `services/ai.py`.
-- **✅ Asynchronous AJAX Generation**: Real-time content insertion without requiring page reloads or context switching.
+- **✅ Asynchronous AJAX Generation**: Real-time content insertion into the editor canvas without requiring page reloads.
 
 ### ✍️ Editorial & Publishing Suite
 - **✅ Distraction-Free Writing Interface**: Clean canvas optimized for writing focus with instant title/content DOM syncing.
@@ -73,12 +84,32 @@ Discover comes packed with a comprehensive set of features built for content cre
 
 ---
 
-## 🤖 AI Writing Assistant
+## 🤖 AI Writing Assistant & Generative Text
 
 The **Google Gemini AI Writing Assistant** is the centerpiece of Discover's writing workspace. Integrated directly into the story creator (`/create/`), it acts as an intelligent co-writer that drafts high-quality blog posts on demand.
 
 > [!TIP]
-> **How to use**: Simply type a post topic into the title field (e.g., *"The Future of Web Development with Django"*) and click **✨ Generate AI**. The assistant will generate a fully formatted article in seconds!
+> **How to use**: Simply type a post topic into the title field or content prompt box and click **✨ Generate AI**. The assistant will generate a fully formatted article in seconds!
+
+<div align="center">
+
+![Discover AI Writing Assistant Tool](assets/screenshots/ai_tool.png)
+
+*Figure 2: AI Writing Assistant interface with prompt input for article generation.*
+
+</div>
+
+### 🤖 AI Generative Text Output
+
+Once triggered, Google Gemini AI returns structured markdown formatted text containing title headings, introductory hooks, detailed paragraphs, and summary conclusions.
+
+<div align="center">
+
+![Discover AI Generative Text Output](assets/screenshots/ai_generated_text.png)
+
+*Figure 3: AI Generative Text view displaying full generated article text in the story editor.*
+
+</div>
 
 ### 🔄 Asynchronous AI Workflow
 
@@ -102,13 +133,13 @@ graph TD
 
 When triggered, the AI service enforces strict prompt rules ensuring published articles meet top editorial standards:
 
-| Section | Output Specification |
-| :--- | :--- |
-| **Headline & Hook** | Catchy, click-worthy title with an engaging opening paragraph. |
-| **Section Headings** | Structured Markdown headers (`##`, `###`) for effortless readability. |
-| **Key Takeaways** | Clean bulleted lists formatting complex ideas into scannable insights. |
-| **Target Length** | In-depth ~800 to 1000-word comprehensive coverage of the topic. |
-| **Wrap-up** | Concluding summary encouraging reader engagement and discussion. |
+| Section | Output Specification | AI Generative Text Feature |
+| :--- | :--- | :--- |
+| **Headline & Hook** | Catchy, click-worthy title with an engaging opening paragraph. | Included in Generated Output |
+| **Section Headings** | Structured Markdown headers (`##`, `###`) for effortless readability. | Included in Generated Output |
+| **Key Takeaways** | Clean bulleted lists formatting complex ideas into scannable insights. | Included in Generated Output |
+| **Target Length** | In-depth ~800 to 1000-word comprehensive coverage of the topic. | Included in Generated Output |
+| **Wrap-up** | Concluding summary encouraging reader engagement and discussion. | Included in Generated Output |
 
 ---
 
@@ -120,7 +151,7 @@ The editor interface combines minimalism with maximum utility, incorporating a d
 
 ![Discover Story Creator & AI Article Generator](assets/screenshots/create_post.png)
 
-*Figure 2: Story Creator interface showcasing the **✨ Generate AI** action button and live cover dropzone.*
+*Figure 4: Story Creator interface showcasing the prompt entry area and **✨ Generate AI** action button.*
 
 </div>
 
@@ -137,7 +168,7 @@ Every user receives a personal profile dashboard displaying publication metrics,
 
 ![Discover Author Profile](assets/screenshots/profile_page.png)
 
-*Figure 3: Author profile dashboard displaying total published articles, draft count, and published stories feed.*
+*Figure 5: Author profile dashboard displaying author stats, published stories, and profile avatar.*
 
 </div>
 
@@ -151,7 +182,7 @@ Discover features a dedicated `/drafts/` hub where authors can manage unfinished
 
 ![Discover Drafts Workspace](assets/screenshots/drafts_page.png)
 
-*Figure 4: Drafts management workspace providing easy access to edit or publish saved drafts.*
+*Figure 6: Drafts management workspace providing easy access to edit or publish saved drafts.*
 
 </div>
 
@@ -165,21 +196,7 @@ Find content instantly using the search engine. Discover queries both story titl
 
 ![Discover Search & Explore](assets/screenshots/search_page.png)
 
-*Figure 5: Search and exploration screen with real-time keyword filtering.*
-
-</div>
-
----
-
-## ⚙️ Profile Customization
-
-Writers can customize their public presence by updating their avatar, adjusting profile metadata, and writing a bio with a live character count guardrail.
-
-<div align="center">
-
-![Discover Edit Profile](assets/screenshots/edit_profile.png)
-
-*Figure 6: Profile editor with avatar upload dropzone and live bio character counter.*
+*Figure 7: Search and exploration screen with real-time keyword filtering.*
 
 </div>
 
@@ -191,10 +208,9 @@ Discover provides streamlined account registration and login pages styled cleanl
 
 <div align="center">
 
-| Sign In Page | User Registration |
-| :---: | :---: |
-| ![Discover Sign In](assets/screenshots/login_page.png) | ![Discover Registration](assets/screenshots/register_page.png) |
-| *Figure 7: Minimalist Sign In screen.* | *Figure 8: Account registration screen with auto-login.* |
+![Discover Sign In](assets/screenshots/login_page.png)
+
+*Figure 7: Minimalist Sign In and authentication screen.*
 
 </div>
 
