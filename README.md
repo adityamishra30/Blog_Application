@@ -1,235 +1,437 @@
 <div align="center">
 
-# ✨ Discover — Minimalist Premium Publishing Platform
+# ✨ Discover — AI Powered Blogging Platform
 
-[![Django](https://img.shields.io/badge/Django-5.0%2B-092E20?style=for-the-badge&logo=django&logoColor=white)](https://www.djangoproject.com/)
-[![Python](https://img.shields.io/badge/Python-3.10%2B-3776AB?style=for-the-badge&logo=python&logoColor=white)](https://www.python.org/)
+[![Django](https://img.shields.io/badge/Django-6.0%2B-092E20?style=for-the-badge&logo=django&logoColor=white)](https://www.djangoproject.com/)
+[![Python](https://img.shields.io/badge/Python-3.12%2B-3776AB?style=for-the-badge&logo=python&logoColor=white)](https://www.python.org/)
 [![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-v4-06B6D4?style=for-the-badge&logo=tailwindcss&logoColor=white)](https://tailwindcss.com/)
 [![Google Gemini AI](https://img.shields.io/badge/Google_Gemini-2.5_Flash-8E44AD?style=for-the-badge&logo=googlegemini&logoColor=white)](https://ai.google.dev/)
+[![SQLite](https://img.shields.io/badge/SQLite-3.0-003B57?style=for-the-badge&logo=sqlite&logoColor=white)](https://www.sqlite.org/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg?style=for-the-badge)](https://opensource.org/licenses/MIT)
 
-*An editorial publishing platform built with **Django**, styled with **Tailwind CSS**, and supercharged with **Google Gemini AI**.*
+<br>
 
-[Explore Features](#-key-features) • [AI Writing Assistant](#-google-gemini-ai-writing-assistant) • [Live Screenshots](#-live-application-screenshots) • [Tech Stack](#-technology-stack) • [Quick Start](#-getting-started)
+*A modern, distraction-free blogging platform built with **Django**, **Tailwind CSS**, and **Google Gemini AI** — designed for writers, creators, and readers.*
+
+<br>
+
+[📖 About](#-about-the-project) • [✨ Features](#-key-features) • [🤖 AI Assistant](#-ai-writing-assistant) • [🛠️ Tech Stack](#-technology-stack) • [🚀 Quick Start](#-installation--setup) • [🔮 Future Roadmap](#-future-roadmap)
 
 ---
 
 </div>
 
-## 📌 Overview
+## 📌 About the Project
 
-**Discover** is a minimalist, distraction-free publishing platform inspired by modern editorial leaders like *Medium*, *Notion*, *Hashnode*, and *GitHub*. Designed for writers and creators, Discover pairs an ultra-clean UI with robust Django backend features and a real-time **Google Gemini AI Writing Assistant** that turns article topics into complete, structured drafts in seconds.
+**Discover** is a modern, production-ready AI-powered blogging platform inspired by premier editorial platforms like **Medium** and **Hashnode**. Built from the ground up to provide a seamless publishing experience, Discover combines a minimalist typography-first design with powerful backend engineering and real-time generative AI capabilities.
+
+At its core, Discover empowers creators to overcome writer's block. By leveraging **Google Gemini AI**, writers can generate complete, professionally structured long-form articles in seconds, directly within an intuitive distraction-free editor.
 
 > [!NOTE]
-> Discover is fully responsive, production-ready, and built using custom Tailwind CSS components, Django ORM database architecture, custom signal handlers, and AJAX-driven AI generation services.
+> Discover is fully responsive and features asynchronous AJAX blog generation, Django ORM database persistence, custom signal handlers for automated profile creation, and dynamic cover image uploads.
+
+---
+
+## 🏠 Editorial Home Feed
+
+The home feed delivers a clean, editorial layout featuring a prominent spotlight post alongside a multi-column story grid highlighting published works, author metadata, publication dates, and cover images.
+
+<div align="center">
+
+![Discover Editorial Home Feed](assets/screenshots/home_feed.png)
+
+*Figure 1: Discover Editorial Home Feed featuring hero story spotlight and dynamic article grid.*
+
+</div>
 
 ---
 
 ## ✨ Key Features
 
-- **🤖 Google Gemini AI Writing Assistant**: Automatically generates structured, 800–1000 word blog articles directly from a title or topic using `gemini-2.5-flash`.
-- **✍️ Distraction-Free Story Creator**: Clean editor equipped with image drag-and-drop cover uploads, instant AI content generation, and dual-mode **Publish** or **Save as Draft** capabilities.
-- **📰 Editorial Home Feed**: Spotlight hero story layout paired with a dynamic multi-column story grid synced to Django database querysets.
-- **🔐 User Authentication & Auto-Login**: Seamless user registration with automatic login session establishment and real-time status alerts.
-- **📂 Draft Posts Management**: Dedicated `/drafts/` workspace where authors can organize, preview, and publish saved drafts when ready.
-- **👤 Author Profile & Stats Dashboard**: Personal portal tracking published articles, drafts, reader metrics, and user bio settings.
-- **🎨 Profile Customization**: Custom avatar uploads, real-time 250-character bio counters, and user metadata management.
-- **🔍 Real-Time Search Engine**: Django queryset filtering searching across article titles and content strings.
+Discover comes packed with a comprehensive set of features built for content creators and readers alike:
+
+### 🤖 Generative AI & Content Creation
+- **✅ Google Gemini AI Blog Generator**: Generate comprehensive long-form articles instantly from just a title or prompt.
+- **✅ AI-Powered Article Writing**: Automatically structures articles with captivating introductions, section headers, bulleted takeaways, and conclusions.
+- **✅ Decoupled AI Service Layer**: Modular architecture isolating AI prompt formatting and Gemini SDK client logic in `services/ai.py`.
+- **✅ Asynchronous AJAX Generation**: Real-time content insertion without requiring page reloads or context switching.
+
+### ✍️ Editorial & Publishing Suite
+- **✅ Distraction-Free Writing Interface**: Clean canvas optimized for writing focus with instant title/content DOM syncing.
+- **✅ Draft System**: Save post drafts to review, edit, or publish at your convenience.
+- **✅ Publish Controls**: Instant one-click publishing transition from draft to live feed.
+- **✅ Cover Image Upload**: Interactive drag-and-drop cover image dropzone supporting custom media uploads via Django Pillow integration.
+
+### 👤 User Management & Customization
+- **✅ Secure User Authentication**: Built-in signup, signin, and logout flows with password encryption and session auto-login upon registration.
+- **✅ Profile Management**: Personal author portal showcasing metrics (articles count, readers, following), published articles, and draft quick-links.
+- **✅ Edit Profile**: Avatar image uploader, live 250-character bio counter, and profile metadata management.
+
+### 🔍 Search & Exploration
+- **✅ Real-Time Search Engine**: Filter across article titles and body content using Django ORM lookup queries with clean empty states.
+- **✅ Modern Responsive UI**: Tailored Tailwind CSS design system fully responsive across mobile, tablet, and desktop viewports.
 
 ---
 
-## 🤖 Google Gemini AI Writing Assistant
+## 🤖 AI Writing Assistant
 
-Discover integrates Google Gemini AI (`google-genai` SDK) directly into the story creation flow to boost creator productivity.
+The **Google Gemini AI Writing Assistant** is the centerpiece of Discover's writing workspace. Integrated directly into the story creator (`/create/`), it acts as an intelligent co-writer that drafts high-quality blog posts on demand.
 
 > [!TIP]
-> Just type an article title and hit **✨ Generate AI**. The app fetches a structured draft asynchronously without refreshing the page!
+> **How to use**: Simply type a post topic into the title field (e.g., *"The Future of Web Development with Django"*) and click **✨ Generate AI**. The assistant will generate a fully formatted article in seconds!
 
-### ⚙️ How AI Generation Works
+### 🔄 Asynchronous AI Workflow
 
 ```mermaid
-sequenceDiagram
-    autonumber
-    actor Writer
-    participant Editor as UI Editor (Vanilla JS)
-    participant View as Django View (/generate-blog/)
-    participant Service as AI Service (services/ai.py)
-    participant Gemini as Google Gemini 2.5 Flash API
+graph TD
+    A[Writer Enters Title] --> B[Clicks ✨ Generate AI]
+    B --> C[JavaScript Fetch API Request]
+    C --> D[Django View /generate-blog/]
+    D --> E[AI Service Layer services/ai.py]
+    E --> F[Google Gemini 2.5 Flash API]
+    F --> G[Generated Article Payload]
+    G --> H[JSON Response Object]
+    H --> I[Editor Textarea Populated]
 
-    Writer->>Editor: Enters title & clicks "✨ Generate AI"
-    Editor->>View: POST /generate-blog/ (title payload via Fetch API)
-    View->>Service: Invokes generate_article(title)
-    Service->>Gemini: client.models.generate_content("gemini-2.5-flash")
-    Gemini-->>Service: Structured article (Intro, Headings, Bullets, Conclusion)
-    Service-->>View: Returns markdown/text article payload
-    View-->>Editor: JSON Response {"content": article_text}
-    Editor-->>Writer: Real-time textarea population without page reload
+    style B fill:#3843D0,color:#fff,stroke:#333,stroke-width:2px
+    style F fill:#8E44AD,color:#fff,stroke:#333,stroke-width:2px
+    style I fill:#2ECC71,color:#fff,stroke:#333,stroke-width:2px
 ```
 
-### 📋 AI Prompt Requirements Matrix
-When requested, Gemini generates content matching rigorous publishing standards:
-- **Title & Intro**: High-engagement headline & hook.
-- **Structure**: Markdown headers (`##`, `###`) for clear readability.
-- **Key Takeaways**: Bullet points for fast scanning.
-- **Length**: ~800–1000 words.
-- **Conclusion**: Summary and concluding thoughts.
+### 📝 Generated Content Quality Matrix
 
----
+When triggered, the AI service enforces strict prompt rules ensuring published articles meet top editorial standards:
 
-## 📸 Live Application Screenshots
-
-<details open>
-<summary><b>Click to expand / collapse live interface showcase</b></summary>
-
-<br>
-
-| Feature Screen | Preview |
+| Section | Output Specification |
 | :--- | :--- |
-| **1. Editorial Home Feed**<br>*Hero spotlight & multi-column story grid* | ![Home Feed](assets/screenshots/home_feed.png) |
-| **2. Story Creator & AI Generator**<br>*Distraction-free editor with **✨ Generate AI*** | ![Story Creator](assets/screenshots/create_post.png) |
-| **3. Author Profile & Metrics**<br>*Author portal & publication metrics* | ![Profile Page](assets/screenshots/profile_page.png) |
-| **4. Draft Management Workspace**<br>*Saved drafts overview & publishing controls* | ![Drafts Workspace](assets/screenshots/drafts_page.png) |
-| **5. Real-Time Search Engine**<br>*Instant filter for story titles & contents* | ![Search Page](assets/screenshots/search_page.png) |
-| **6. Profile & Bio Customization**<br>*Avatar upload & bio character limit counter* | ![Edit Profile](assets/screenshots/edit_profile.png) |
-| **7. Sleek Sign-In Page**<br>*Minimalist user authentication* | ![Login Page](assets/screenshots/login_page.png) |
-| **8. Quick User Registration**<br>*Account creation with auto-session login* | ![Register Page](assets/screenshots/register_page.png) |
-
-</details>
+| **Headline & Hook** | Catchy, click-worthy title with an engaging opening paragraph. |
+| **Section Headings** | Structured Markdown headers (`##`, `###`) for effortless readability. |
+| **Key Takeaways** | Clean bulleted lists formatting complex ideas into scannable insights. |
+| **Target Length** | In-depth ~800 to 1000-word comprehensive coverage of the topic. |
+| **Wrap-up** | Concluding summary encouraging reader engagement and discussion. |
 
 ---
 
-## 🎨 Design References & UI Specifications
+## ✍️ Distraction-Free Story Creator
 
-<details>
-<summary><b>Click to view original design mockups</b></summary>
+The editor interface combines minimalism with maximum utility, incorporating a drag-and-drop cover image zone, real-time input synchronization, AI generation controls, and status actions.
 
-<br>
+<div align="center">
 
-- **Home Feed Reference**: ![Home Feed Design Reference](assets/design_references/ref_home_feed.png)
-- **Editor Reference**: ![Story Editor Design Reference](assets/design_references/ref_create_post.png)
-- **Profile Reference**: ![Profile Design Reference](assets/design_references/ref_profile.png)
-- **Search Reference**: ![Search Design Reference](assets/design_references/ref_explore.png)
-- **Edit Profile Reference**: ![Edit Profile Design Reference](assets/design_references/ref_edit_profile.png)
+![Discover Story Creator & AI Article Generator](assets/screenshots/create_post.png)
 
-</details>
+*Figure 2: Story Creator interface showcasing the **✨ Generate AI** action button and live cover dropzone.*
+
+</div>
+
+> [!NOTE]
+> The editor uses Vanilla JavaScript to continuously synchronize visible editor fields with hidden Django form inputs, guaranteeing zero data loss during submission.
+
+---
+
+## 👤 Profile & Author Dashboard
+
+Every user receives a personal profile dashboard displaying publication metrics, live article feeds, saved drafts, and quick navigation links.
+
+<div align="center">
+
+![Discover Author Profile](assets/screenshots/profile_page.png)
+
+*Figure 3: Author profile dashboard displaying total published articles, draft count, and published stories feed.*
+
+</div>
+
+---
+
+## 📝 Saved Drafts Workspace
+
+Discover features a dedicated `/drafts/` hub where authors can manage unfinished articles, preview formatting, and publish posts to the public feed when ready.
+
+<div align="center">
+
+![Discover Drafts Workspace](assets/screenshots/drafts_page.png)
+
+*Figure 4: Drafts management workspace providing easy access to edit or publish saved drafts.*
+
+</div>
+
+---
+
+## 🔍 Search & Exploration Engine
+
+Find content instantly using the search engine. Discover queries both story titles and content bodies using Django ORM `Q` lookup objects to deliver relevant search results.
+
+<div align="center">
+
+![Discover Search & Explore](assets/screenshots/search_page.png)
+
+*Figure 5: Search and exploration screen with real-time keyword filtering.*
+
+</div>
+
+---
+
+## ⚙️ Profile Customization
+
+Writers can customize their public presence by updating their avatar, adjusting profile metadata, and writing a bio with a live character count guardrail.
+
+<div align="center">
+
+![Discover Edit Profile](assets/screenshots/edit_profile.png)
+
+*Figure 6: Profile editor with avatar upload dropzone and live bio character counter.*
+
+</div>
+
+---
+
+## 🔐 Authentication & Onboarding
+
+Discover provides streamlined account registration and login pages styled cleanly with error alert handling and instant session login.
+
+<div align="center">
+
+| Sign In Page | User Registration |
+| :---: | :---: |
+| ![Discover Sign In](assets/screenshots/login_page.png) | ![Discover Registration](assets/screenshots/register_page.png) |
+| *Figure 7: Minimalist Sign In screen.* | *Figure 8: Account registration screen with auto-login.* |
+
+</div>
 
 ---
 
 ## 🛠️ Technology Stack
 
-| Layer | Technologies & Tools | Description |
+Discover is engineered using production-grade open-source technologies:
+
+| Technology | Category | Purpose & Implementation |
 | :--- | :--- | :--- |
-| **Backend** | Python 3.12, Django 6.0 | Core MVC framework, ORM, authentication & URL routing |
-| **AI Engine** | Google Gemini 2.5 Flash (`google-genai`), `python-dotenv` | LLM article generation service |
-| **Frontend** | HTML5, JavaScript (ES6+), Fetch API | Interactivity, AJAX AI invocation & input syncing |
-| **Styling** | Tailwind CSS v4, Heroicons | Minimalist design system, typography & icons |
-| **Database** | SQLite3 | Relational store for stories, users & profiles |
-| **Media Handling** | Pillow (`ImageField`) | Profile avatars and article cover photos |
+| **Python 3.12** | Language | Primary backend language |
+| **Django 6.0** | Web Framework | MVC architecture, ORM model mapping, URL routing, authentication & signals |
+| **Google Gemini AI** | AI Engine | Article generation powered by `google-genai` SDK (`gemini-2.5-flash` model) |
+| **Tailwind CSS v4** | Styling | Modern, utility-first UI design system & responsive layout engine |
+| **JavaScript (ES6+)** | Frontend Logic | Asynchronous Fetch API AJAX requests, DOM input sync & character counters |
+| **SQLite3** | Database | Relational database persisting users, profiles, and blog posts |
+| **Pillow** | Image Engine | Processing and managing user profile avatars and article cover photos |
+| **Heroicons** | Iconography | Crisp SVG icons for enhanced user experience |
 
 ---
 
-## 🚀 Getting Started
+## 🏗️ System Architecture & Data Flow
 
-### 📋 Prerequisites
-Ensure you have the following installed on your machine:
+The following architecture diagram outlines how Discover handles user interactions, database queries, and external AI services:
+
+```mermaid
+flowchart TB
+    subgraph Client["Client Tier (Browser)"]
+        UI["Tailwind CSS UI"]
+        JS["Vanilla JS Controller (Fetch API)"]
+    end
+
+    subgraph Server["Application Tier (Django WSGI/ASGI)"]
+        URL["URL Dispatcher (urls.py)"]
+        VIEW["Views Layer (views.py)"]
+        FORM["Django ModelForms (forms.py)"]
+        SIG["Signals Handler (signals.py)"]
+        AI_SVC["AI Service Layer (services/ai.py)"]
+    end
+
+    subgraph Database["Persistence Tier"]
+        DB[(SQLite DB)]
+        MEDIA["/media/ Storage (Pillow)"]
+    end
+
+    subgraph External["External Cloud Tier"]
+        GEMINI["Google Gemini 2.5 Flash API"]
+    end
+
+    UI -->|User Action / Form Submit| JS
+    JS -->|AJAX POST /generate-blog/| URL
+    URL -->|Route Request| VIEW
+    VIEW -->|Invoke Service| AI_SVC
+    AI_SVC -->|API Request + GEMINI_API_KEY| GEMINI
+    GEMINI -->|Generated Article Text| AI_SVC
+    AI_SVC -->|Return Text| VIEW
+    VIEW -->|JSON Response| JS
+    JS -->|Update DOM Textarea| UI
+
+    VIEW -->|Save Blog / Profile| FORM
+    FORM -->|Persist Data| DB
+    FORM -->|Save Cover / Avatar| MEDIA
+    DB -.->|Trigger User Creation| SIG
+    SIG -.->|Auto-Create Profile| DB
+```
+
+---
+
+## 📁 Project Structure
+
+```text
+Blog_App/
+├── assets/
+│   ├── design_references/      # Official design reference specifications
+│   └── screenshots/            # Live application screenshots
+├── django_blog/
+│   ├── blog/
+│   │   ├── migrations/         # Database migration files
+│   │   ├── services/
+│   │   │   ├── __init__.py
+│   │   │   └── ai.py           # Gemini AI generation service
+│   │   ├── static/             # Static assets & compiled output.css
+│   │   ├── templates/blog/     # Django HTML templates
+│   │   │   ├── auth_base.html  # Authentication layout template
+│   │   │   ├── base.html       # Main application layout template
+│   │   │   ├── create_post.html# Story creator & AI generator interface
+│   │   │   ├── drafts.html     # Saved drafts management page
+│   │   │   ├── edit_profile.html# Profile editing interface
+│   │   │   ├── home.html       # Editorial home feed
+│   │   │   ├── login.html      # User login view
+│   │   │   ├── post_detail.html# Full article detail view
+│   │   │   ├── profile.html    # Author profile & stats view
+│   │   │   ├── register.html   # User registration view
+│   │   │   └── search.html     # Search results view
+│   │   ├── admin.py            # Django Admin registration
+│   │   ├── apps.py             # App configuration
+│   │   ├── forms.py            # ModelForms for Blog & Profile
+│   │   ├── models.py           # Blog & Profile data models
+│   │   ├── signals.py          # Automatic profile creation signal
+│   │   ├── tests.py            # Django automated test suite
+│   │   ├── urls.py             # Blog application URL routing
+│   │   └── views.py            # View functions & AJAX handlers
+│   ├── django_blog/            # Root project configuration
+│   │   ├── settings.py         # Global Django settings
+│   │   ├── urls.py             # Root URL routing
+│   │   └── wsgi.py             # WSGI entry point
+│   ├── manage.py               # Django CLI management script
+│   └── test_ai.py              # Standalone Gemini API verification script
+├── .env                        # Environment variables configuration
+├── .gitignore                  # Git ignore rules
+└── README.md                   # Project documentation
+```
+
+---
+
+## 🚀 Installation & Setup
+
+Follow these steps to get a local copy of Discover running on your system:
+
+### 1. Prerequisites
+Ensure you have installed:
 - **Python 3.10+**
-- **Node.js 18+** (for Tailwind CSS compilation if building from source)
 - **Git**
 
 ---
 
-### 💻 Quick Step-by-Step Setup
+### 2. Step-by-Step Installation
 
-#### 1. Clone the Repository
+#### Step 1: Clone the Repository
 ```bash
 git clone https://github.com/adityamishra30/Blog_Application.git
 cd Blog_Application
 ```
 
-#### 2. Set Up & Activate Virtual Environment
+#### Step 2: Create & Activate Virtual Environment
 ```bash
-# Windows:
+# On Windows:
 python -m venv venv
 venv\Scripts\activate
 
-# macOS / Linux:
+# On macOS / Linux:
 python3 -m venv venv
 source venv/bin/activate
 ```
 
-#### 3. Install Python Dependencies
+#### Step 3: Install Dependencies
 ```bash
 pip install django pillow python-dotenv google-genai
 ```
 
-#### 4. Configure Environment Variables
-Create a `.env` file in the root directory (or in `django_blog/`):
+#### Step 4: Setup Environment Variables
+Create a `.env` file in the root directory:
 ```env
 GEMINI_API_KEY=your_google_gemini_api_key_here
+SECRET_KEY=your_django_secret_key
+DEBUG=True
 ```
-> [!IMPORTANT]
-> Obtain a free Gemini API key from [Google AI Studio](https://aistudio.google.com/).
 
-#### 5. Apply Database Migrations
+> [!IMPORTANT]
+> You can obtain a free **Google Gemini API Key** from [Google AI Studio](https://aistudio.google.com/).
+
+#### Step 5: Run Database Migrations
 ```bash
 cd django_blog
 python manage.py migrate
 ```
 
-#### 6. Verify Gemini AI Integration *(Optional)*
-Verify API connectivity and test the generation script:
+#### Step 6: Verify AI Integration *(Optional)*
+Test your Gemini API key and connectivity with the included test script:
 ```bash
 python test_ai.py
 ```
 
-#### 7. Launch Development Server
+#### Step 7: Launch the Server
 ```bash
 python manage.py runserver
 ```
-Visit **`http://127.0.0.1:8000/`** in your browser!
+
+Open your browser and navigate to **`http://127.0.0.1:8000/`**.
 
 ---
 
-## 📁 Repository Structure
+## 🔑 Environment Variables Reference
 
-```text
-Blog_App/
-├── assets/
-│   ├── design_references/     # Original design reference specifications
-│   └── screenshots/           # Application screenshots for README
-├── django_blog/
-│   ├── blog/
-│   │   ├── migrations/        # Django database migrations
-│   │   ├── services/
-│   │   │   └── ai.py          # Gemini AI generation service
-│   │   ├── static/            # Compiled Tailwind CSS output (output.css)
-│   │   ├── templates/blog/    # Application HTML templates
-│   │   ├── admin.py           # Admin portal registration
-│   │   ├── forms.py           # ModelForms for Blog & Profile
-│   │   ├── models.py          # Blog post & Profile models
-│   │   ├── signals.py         # Signal handlers for profile auto-creation
-│   │   ├── tests.py           # Django test suite
-│   │   ├── urls.py            # Blog app URL routing
-│   │   └── views.py           # Controller logic & AJAX endpoint handlers
-│   ├── django_blog/           # Core project settings & global URLs
-│   ├── manage.py              # Django management CLI
-│   └── test_ai.py             # Standalone Gemini AI API test script
-├── .gitignore                 # Git ignore rules
-└── README.md                  # Project documentation
-```
+Discover uses `python-dotenv` to manage application environment settings securely.
+
+| Variable | Required | Description | Example |
+| :--- | :---: | :--- | :--- |
+| `GEMINI_API_KEY` | **Yes** | API key used by `services/ai.py` to authenticate with Google Gemini API | `AIzaSyD...` |
+| `SECRET_KEY` | No | Django cryptographic signing secret key | `django-insecure-...` |
+| `DEBUG` | No | Enables debug mode during development (`True` / `False`) | `True` |
+
+---
+
+## 🔮 Future Roadmap
+
+We are continuously working to enhance Discover. Key planned features on the horizon include:
+
+- [ ] **🤖 AI Content Summarizer**: One-click AI summaries for long articles in the feed.
+- [ ] **🔍 AI SEO Generator**: Automated meta title, description, and keyword generation.
+- [ ] **🏷️ AI Tag Generator**: Automatic topic tagging based on article content.
+- [ ] **✨ Grammar & Tone Polisher**: Real-time AI grammar check and tone adjustment.
+- [ ] **📝 WYSIWYG Markdown Editor**: Integrated rich-text / markdown live preview editor.
+- [ ] **💬 Interactive Comments System**: Reader discussion threads under published posts.
+- [ ] **🔖 Bookmarks & Reading List**: Save favorite stories to personal reading lists.
+- [ ] **👏 Article Likes & Claps**: Interactive reader appreciation counters.
+- [ ] **🔔 Real-Time Notifications**: In-app notifications for likes, comments, and new followers.
 
 ---
 
 ## 🤝 Contributing
 
-Contributions, issues, and feature requests are welcome! Feel free to check the issues page or submit a Pull Request.
+Contributions make the open-source community an amazing place to learn, inspire, and create. Any contributions you make are **greatly appreciated**!
+
+1. Fork the Project
+2. Create your Feature Branch (`git checkout -b feature/AmazingFeature`)
+3. Commit your Changes (`git commit -m 'Add some AmazingFeature'`)
+4. Push to the Branch (`git push origin feature/AmazingFeature`)
+5. Open a Pull Request
 
 ---
 
 ## 📄 License
 
-This project is open-source under the [MIT License](LICENSE).
+Distributed under the **MIT License**. See `LICENSE` for more information.
 
-```text
-Made with ❤️ by Aditya Mishra
-```
+---
+
+## 👨‍💻 Author
+
+<div align="center">
+
+**Aditya Mishra**
+
+[![GitHub](https://img.shields.io/badge/GitHub-adityamishra30-181717?style=for-the-badge&logo=github)](https://github.com/adityamishra30)
+
+*Made with ❤️ by Aditya Mishra*
+
+</div>
