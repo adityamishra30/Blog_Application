@@ -8,6 +8,10 @@ from django.contrib.auth.decorators import login_required
 # pyrefly: ignore [missing-import]
 from .forms import BlogForm,ProfileForm
 from django.contrib import messages
+from django.http import JsonResponse
+from django.views.decorators.http import require_POST
+# pyrefly: ignore [missing-import]
+from .services.ai import generate_article
 
 def logout_view(request):
     logout(request)
@@ -47,29 +51,32 @@ def register_view(request):
 
     if request.method == "POST":
 
-        username = request.POST.get("username")
-        email = request.POST.get("email")
-        password = request.POST.get("password")
-        confirm_password = request.POST.get("confirm_password")
+        username = request.POST.get("username", "").strip()
+        email = request.POST.get("email", "").strip()
+        password = request.POST.get("password", "")
+        confirm_password = request.POST.get("confirm_password", "")
 
         if password != confirm_password:
-            return HttpResponse("Passwords do not match")
+            messages.error(request, "Passwords do not match.")
+            return render(request, "blog/register.html")
 
         if User.objects.filter(username=username).exists():
-            return HttpResponse("Username already exists")
+            messages.error(request, "Username already exists.")
+            return render(request, "blog/register.html")
 
         if User.objects.filter(email=email).exists():
-            return HttpResponse("Email already exists")
+            messages.error(request, "Email address is already registered.")
+            return render(request, "blog/register.html")
 
-        User.objects.create_user(
+        user = User.objects.create_user(
             username=username,
             email=email,
             password=password
         )
 
-        user = authenticate(request, username=username, password=password)
-        if user is not None:
-            login(request, user)
+        auth_user = authenticate(request, username=username, password=password)
+        if auth_user is not None:
+            login(request, auth_user)
 
         return redirect("home")
 
@@ -108,6 +115,31 @@ def create_post(request):
     }
 
     return render(request, "blog/create_post.html", context)
+
+@require_POST
+@login_required
+def generate_blog(request):
+
+    title = request.POST.get("title", "").strip()
+
+    if not title:
+        return JsonResponse(
+            {"error": "Please enter a title."},
+            status=400,
+        )
+
+    try:
+        article = generate_article(title)
+
+        return JsonResponse({
+            "content": article
+        })
+
+    except Exception as e:
+        return JsonResponse(
+            {"error": str(e)},
+            status=500,
+        )
 
 def post_detail(request, id):
     post = get_object_or_404(Blog, id=id)

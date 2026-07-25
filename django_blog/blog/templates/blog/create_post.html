@@ -42,12 +42,22 @@
 
         <!-- Title Field -->
         <div>
-            <input
-                type="text"
-                id="custom_title"
-                placeholder="Article Title..."
-                class="w-full text-3xl sm:text-4xl font-extrabold text-gray-900 placeholder:text-gray-300 border-0 focus:ring-0 p-0 focus:outline-none"
-            />
+            <div class="flex items-center gap-4">
+    <input
+        type="text"
+        id="custom_title"
+        placeholder="Article Title..."
+        class="flex-1 text-3xl sm:text-4xl font-extrabold text-gray-900 placeholder:text-gray-300 border-0 focus:ring-0 p-0 focus:outline-none"
+    >
+
+    <button
+        type="button"
+        id="generate-ai-btn"
+        class="px-5 py-3 bg-[#3843D0] hover:bg-indigo-700 text-white rounded-lg font-semibold transition"
+    >
+        ✨ Generate AI
+    </button>
+</div>
         </div>
 
         <!-- Story Content Textarea -->
@@ -114,6 +124,63 @@
                 coverFilename.className = "text-[11px] font-bold text-indigo-600 mt-1";
             }
         });
+        const generateBtn = document.getElementById("generate-ai-btn");
+
+generateBtn.addEventListener("click", async () => {
+
+    const title = customTitle.value.trim();
+
+    if (!title) {
+        alert("Please enter a title first.");
+        return;
+    }
+
+    generateBtn.disabled = true;
+    generateBtn.textContent = "Generating...";
+
+    try {
+
+        const response = await fetch("{% url 'generate_blog' %}", {
+
+            method: "POST",
+
+            headers: {
+                "Content-Type": "application/x-www-form-urlencoded",
+                "X-CSRFToken": document.querySelector("[name=csrfmiddlewaretoken]").value,
+            },
+
+            body: new URLSearchParams({
+                title: title
+            })
+
+        });
+
+        const data = await response.json();
+
+        if (data.error) {
+
+            alert(data.error);
+
+        } else {
+
+            customContent.value = data.content;
+
+            if (realContent)
+                realContent.value = data.content;
+
+        }
+
+    } catch (error) {
+
+        console.error(error);
+        alert("AI generation failed.");
+
+    }
+
+    generateBtn.disabled = false;
+    generateBtn.textContent = "✨ Generate AI";
+
+});
     });
 
     function submitFormWithStatus(statusVal) {

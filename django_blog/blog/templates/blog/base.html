@@ -11,6 +11,16 @@
 
 <body class="bg-[#F9FAFB] text-gray-900 font-sans antialiased min-h-screen flex flex-col">
 
+{% if messages %}
+<div class="max-w-7xl mx-auto px-6 lg:px-8 pt-4 w-full">
+    {% for message in messages %}
+    <div class="p-4 mb-3 text-sm rounded-lg border {% if message.tags == 'error' %}bg-red-50 text-red-800 border-red-200{% else %}bg-blue-50 text-blue-800 border-blue-200{% endif %}" role="alert">
+        <span class="font-medium">{{ message }}</span>
+    </div>
+    {% endfor %}
+</div>
+{% endif %}
+
 {% block body %}
 
 {% endblock %}
