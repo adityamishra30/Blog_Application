@@ -4,40 +4,69 @@
 
 ---
 
-## 📸 Visual Showcase & Screenshots
+## 🎨 Official Design System & Reference UI
 
-### 1. Home Editorial Feed
+The application UI faithfully adheres to the official minimalist Discover Editorial design language:
+
+### 1. Home Editorial Feed Design
+![Discover Home Feed Design Reference](assets/design_references/ref_home_feed.png)
+
+---
+
+### 2. Story Editor & Publisher Design
+![Discover Story Editor Design Reference](assets/design_references/ref_create_post.png)
+
+---
+
+### 3. User Profile & Published Works Design
+![Discover User Profile Design Reference](assets/design_references/ref_profile.png)
+
+---
+
+### 4. Search & Topic Exploration Design
+![Discover Search & Explore Design Reference](assets/design_references/ref_explore.png)
+
+---
+
+### 5. Profile Customization & Bio Design
+![Discover Edit Profile Design Reference](assets/design_references/ref_edit_profile.png)
+
+---
+
+## 📸 Live Application Implementation Screenshots
+
+### 1. Home Feed (Backend Live Data)
 A clean single-hero & 3-column grid highlighting published stories, author details, dates, and cover imagery.
 
-![Home Editorial Feed](assets/screenshots/home_feed.png)
+![Home Editorial Feed Live](assets/screenshots/home_feed.png)
 
 ---
 
-### 2. Distraction-Free Story Editor
-Focus-first story creator with cover image uploader, title input, story content area, and action buttons for **Publishing** or **Saving as Draft**.
+### 2. Distraction-Free Story Creator
+Focus-first story creator with cover image uploader, title input, story content area, and working action buttons for **Publishing** or **Saving as Draft**.
 
-![Distraction-Free Story Editor](assets/screenshots/create_post.png)
+![Distraction-Free Story Editor Live](assets/screenshots/create_post.png)
 
 ---
 
-### 3. User Profile & Drafts Management
+### 3. User Profile & Account Logout
 Clean personal space displaying user statistics, published articles, saved drafts, edit profile actions, and account logout.
 
-![User Profile](assets/screenshots/profile_page.png)
+![User Profile Live](assets/screenshots/profile_page.png)
 
 ---
 
-### 4. Search & Exploration
+### 4. Search & Exploration Engine
 Real-time keyword search filtering through story titles and content with zero duplicate cards.
 
-![Search & Explore](assets/screenshots/search_page.png)
+![Search & Explore Live](assets/screenshots/search_page.png)
 
 ---
 
-### 5. Profile Customization
+### 5. Profile Customization Page
 Minimalist avatar uploader, live bio character counter (250 max limit), and profile metadata manager.
 
-![Edit Profile](assets/screenshots/edit_profile.png)
+![Edit Profile Live](assets/screenshots/edit_profile.png)
 
 ---
 
@@ -108,7 +137,8 @@ Make sure you have Python 3.10+ and Node.js installed on your system.
 ```text
 Blog_App/
 ├── assets/
-│   └── screenshots/         # README Screenshot Assets
+│   ├── design_references/   # Official Reference Design Mockups
+│   └── screenshots/         # Live Application Screenshots
 ├── django_blog/
 │   ├── blog/
 │   │   ├── migrations/      # Database Migration Files
