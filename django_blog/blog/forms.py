@@ -8,7 +8,13 @@ class BlogForm(forms.ModelForm):
         fields=["title",
         "content",
         "cover_image",
-        "status"]
+        "status",
+        "is_ai_generated",
+        "generation_topic"]
+        widgets = {
+            "is_ai_generated": forms.HiddenInput(),
+            "generation_topic": forms.HiddenInput(),
+        }
 
 class ProfileForm(forms.ModelForm):
     class Meta:

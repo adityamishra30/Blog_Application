@@ -1,13 +1,19 @@
 # pyrefly: ignore [missing-import]
+import json
+
+from django.conf import settings
+from django.core.cache import cache
 from .models import Blog,Profile
 from django.shortcuts import render, redirect,get_object_or_404
 from django.contrib.auth.models import User
-from django.http import HttpResponse
+from django.http import HttpResponse, JsonResponse
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
+from django.views.decorators.http import require_POST
 # pyrefly: ignore [missing-import]
 from .forms import BlogForm,ProfileForm
 from django.contrib import messages
+from .services import AIServiceError, generate_article_from_topic
 
 def logout_view(request):
     logout(request)
@@ -109,6 +115,56 @@ def create_post(request):
 
     return render(request, "blog/create_post.html", context)
 
+
+def _is_generation_rate_limited(user_id):
+    cache_key = f"ai-generation-rate:{user_id}"
+    allowed_requests = settings.AI_GENERATION_RATE_LIMIT_PER_MINUTE
+
+    if cache.add(cache_key, 1, timeout=60):
+        return False
+
+    try:
+        request_count = cache.incr(cache_key)
+    except ValueError:
+        cache.set(cache_key, 1, timeout=60)
+        return False
+
+    return request_count > allowed_requests
+
+
+@login_required
+@require_POST
+def generate_article(request):
+    if _is_generation_rate_limited(request.user.id):
+        return JsonResponse(
+            {"success": False, "error": "Rate limit exceeded. Try again in a minute."},
+            status=429,
+        )
+
+    try:
+        payload = json.loads(request.body.decode("utf-8"))
+    except json.JSONDecodeError:
+        return JsonResponse({"success": False, "error": "Invalid request payload."}, status=400)
+
+    topic = (payload.get("topic") or "").strip()
+    if not topic:
+        return JsonResponse({"success": False, "error": "Topic is required."}, status=400)
+
+    try:
+        generated = generate_article_from_topic(topic)
+    except AIServiceError as exc:
+        status_code = 503 if "configured" in str(exc).lower() else 400
+        return JsonResponse({"success": False, "error": str(exc)}, status=status_code)
+
+    return JsonResponse(
+        {
+            "success": True,
+            "title": generated["title"],
+            "content": generated["content"],
+            "topic": generated["topic"],
+        }
+    )
+
 def post_detail(request, id):
     post = get_object_or_404(Blog, id=id)
 
@@ -201,5 +257,4 @@ def publish_post(request, id):
     post.status = "published"
     post.save()
     return redirect("post_detail", id=post.id)
-
 

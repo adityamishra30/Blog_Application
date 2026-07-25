@@ -36,6 +36,8 @@ class Blog(models.Model):
         choices=STATUS_CHOICES,
         default="draft"
     )
+    is_ai_generated = models.BooleanField(default=False)
+    generation_topic = models.CharField(max_length=120, blank=True)
 
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)

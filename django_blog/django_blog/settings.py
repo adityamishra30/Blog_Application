@@ -10,8 +10,7 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/6.0/ref/settings/
 """
 
-from django.conf.global_settings import MEDIA_ROOT
-from django.conf.global_settings import MEDIA_URL
+import os
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -128,3 +127,28 @@ MEDIA_ROOT = BASE_DIR / 'media'
 LOGIN_URL = "login"
 LOGIN_REDIRECT_URL = "home"
 LOGOUT_REDIRECT_URL = "login"
+
+
+def _env_int(name, default):
+    try:
+        return int(os.getenv(name, default))
+    except (TypeError, ValueError):
+        return default
+
+
+CACHES = {
+    "default": {
+        "BACKEND": "django.core.cache.backends.locmem.LocMemCache",
+        "LOCATION": "blog-application-cache",
+    }
+}
+
+AI_GENERATION_API_KEY = os.getenv("AI_GENERATION_API_KEY", "")
+AI_GENERATION_MODEL = os.getenv("AI_GENERATION_MODEL", "gpt-4o-mini")
+AI_GENERATION_API_URL = os.getenv(
+    "AI_GENERATION_API_URL",
+    "https://api.openai.com/v1/chat/completions",
+)
+AI_GENERATION_TIMEOUT_SECONDS = _env_int("AI_GENERATION_TIMEOUT_SECONDS", 20)
+AI_GENERATION_MAX_TOKENS = _env_int("AI_GENERATION_MAX_TOKENS", 900)
+AI_GENERATION_RATE_LIMIT_PER_MINUTE = _env_int("AI_GENERATION_RATE_LIMIT_PER_MINUTE", 5)

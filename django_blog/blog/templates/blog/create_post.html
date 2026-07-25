@@ -11,6 +11,8 @@
         {{ form.content }}
         {{ form.cover_image }}
         {{ form.status }}
+        {{ form.is_ai_generated }}
+        {{ form.generation_topic }}
     </div>
 
     <!-- Top Action Navigation Bar -->
@@ -38,6 +40,30 @@
             <p id="cover-filename" class="text-[10px] text-gray-400 mt-1 font-medium">
                 Click to browse or upload image file
             </p>
+        </div>
+
+        <!-- AI Topic Generator -->
+        <div class="border border-gray-200 bg-gray-50 p-5 space-y-3">
+            <label for="topic_input" class="block text-xs font-bold uppercase tracking-widest text-gray-500">
+                AI ARTICLE GENERATOR
+            </label>
+            <div class="flex flex-col sm:flex-row gap-3">
+                <input
+                    type="text"
+                    id="topic_input"
+                    maxlength="120"
+                    placeholder="Enter a topic (e.g. Future of renewable energy)"
+                    class="flex-1 border border-gray-300 px-4 py-2.5 text-sm text-gray-900 placeholder:text-gray-400 focus:outline-none focus:border-gray-900 bg-white"
+                />
+                <button
+                    type="button"
+                    id="generate-ai-btn"
+                    class="border border-gray-900 bg-gray-900 hover:bg-black text-white px-5 py-2.5 text-xs font-bold uppercase tracking-wider transition"
+                >
+                    Generate with AI
+                </button>
+            </div>
+            <p id="ai-generate-message" class="text-xs text-gray-500 min-h-4"></p>
         </div>
 
         <!-- Title Field -->
@@ -93,11 +119,17 @@
         const realTitle = djangoFields.querySelector('input[name="title"]');
         const realContent = djangoFields.querySelector('textarea[name="content"]');
         const realCover = djangoFields.querySelector('input[name="cover_image"]');
+        const realAiGenerated = djangoFields.querySelector('input[name="is_ai_generated"]');
+        const realGenerationTopic = djangoFields.querySelector('input[name="generation_topic"]');
 
         const customTitle = document.getElementById('custom_title');
         const customContent = document.getElementById('custom_content');
         const coverDropzone = document.getElementById('cover-dropzone');
         const coverFilename = document.getElementById('cover-filename');
+        const topicInput = document.getElementById('topic_input');
+        const generateAiBtn = document.getElementById('generate-ai-btn');
+        const aiMessage = document.getElementById('ai-generate-message');
+        const csrfToken = document.querySelector('input[name="csrfmiddlewaretoken"]')?.value;
 
         // Sync inputs
         if (realTitle) customTitle.value = realTitle.value;
@@ -114,6 +146,53 @@
                 coverFilename.className = "text-[11px] font-bold text-indigo-600 mt-1";
             }
         });
+
+        generateAiBtn.addEventListener('click', async () => {
+            const topic = topicInput.value.trim();
+
+            if (!topic) {
+                aiMessage.textContent = 'Please enter a topic first.';
+                aiMessage.className = 'text-xs text-red-600 min-h-4';
+                return;
+            }
+
+            generateAiBtn.disabled = true;
+            generateAiBtn.textContent = 'Generating...';
+            aiMessage.textContent = 'Generating article...';
+            aiMessage.className = 'text-xs text-gray-500 min-h-4';
+
+            try {
+                const response = await fetch("{% url 'generate_article' %}", {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRFToken': csrfToken || '',
+                    },
+                    body: JSON.stringify({ topic }),
+                });
+                const result = await response.json();
+
+                if (!response.ok || !result.success) {
+                    throw new Error(result.error || 'Failed to generate article.');
+                }
+
+                customTitle.value = result.title || '';
+                customContent.value = result.content || '';
+                if (realTitle) realTitle.value = customTitle.value;
+                if (realContent) realContent.value = customContent.value;
+                if (realAiGenerated) realAiGenerated.value = 'True';
+                if (realGenerationTopic) realGenerationTopic.value = result.topic || topic;
+
+                aiMessage.textContent = 'Article generated. Review and edit before publishing.';
+                aiMessage.className = 'text-xs text-green-700 min-h-4';
+            } catch (error) {
+                aiMessage.textContent = error.message || 'Could not generate article.';
+                aiMessage.className = 'text-xs text-red-600 min-h-4';
+            } finally {
+                generateAiBtn.disabled = false;
+                generateAiBtn.textContent = 'Generate with AI';
+            }
+        });
     });
 
     function submitFormWithStatus(statusVal) {
@@ -121,18 +200,24 @@
         const realTitle = djangoFields.querySelector('input[name="title"]');
         const realContent = djangoFields.querySelector('textarea[name="content"]');
         const realStatus = djangoFields.querySelector('select[name="status"]');
+        const realAiGenerated = djangoFields.querySelector('input[name="is_ai_generated"]');
+        const realGenerationTopic = djangoFields.querySelector('input[name="generation_topic"]');
 
         const customTitle = document.getElementById('custom_title');
         const customContent = document.getElementById('custom_content');
+        const topicInput = document.getElementById('topic_input');
 
         if (realTitle && customTitle) realTitle.value = customTitle.value;
         if (realContent && customContent) realContent.value = customContent.value;
         if (realStatus) realStatus.value = statusVal;
+        if (realAiGenerated && !realAiGenerated.value) realAiGenerated.value = 'False';
+        if (realGenerationTopic && !realGenerationTopic.value && topicInput?.value.trim()) {
+            realGenerationTopic.value = topicInput.value.trim();
+        }
 
         document.getElementById('create-post-form').submit();
     }
 </script>
 
 {% endblock %}
-
 
